@@ -4,6 +4,7 @@ import { Hero } from '../components/Hero';
 import { Layers, Zap, Shield, TrendingUp, ArrowRight, Code, Rocket, Search, Cpu, Globe, Anchor } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Testimonials } from '../components/Testimonials';
+import { CountUp } from '../components/CountUp';
 
 interface HomeProps {
   navigate: (page: Page) => void;
@@ -139,14 +140,16 @@ export const Home: React.FC<HomeProps> = ({ navigate }) => {
         <div className="container mx-auto px-6 relative z-10 text-white">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center divide-x divide-white/10">
              {[
-               { label: "Active Users", value: "50K+", icon: <Globe size={20} /> },
-               { label: "Countries", value: "30+", icon: <Anchor size={20} /> },
-               { label: "Products", value: "15+", icon: <Cpu size={20} /> },
-               { label: "Uptime", value: "99.9%", icon: <Zap size={20} /> }
+               { label: "Active Users", value: 50, suffix: "K+", icon: <Globe size={20} /> },
+               { label: "Countries", value: 30, suffix: "+", icon: <Anchor size={20} /> },
+               { label: "Products", value: 15, suffix: "+", icon: <Cpu size={20} /> },
+               { label: "Uptime", value: 99.9, suffix: "%", icon: <Zap size={20} /> }
              ].map((stat, idx) => (
                <div key={idx} className="px-4">
                  <div className="flex items-center justify-center gap-2 text-blue-300 mb-2">{stat.icon}</div>
-                 <div className="text-5xl md:text-6xl font-bold mb-2 tracking-tight">{stat.value}</div>
+                 <div className="text-5xl md:text-6xl font-bold mb-2 tracking-tight">
+                    <CountUp value={stat.value} suffix={stat.suffix} />
+                 </div>
                  <div className="text-white/60 font-medium uppercase tracking-wider text-sm">{stat.label}</div>
                </div>
              ))}

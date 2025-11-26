@@ -1,22 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Page } from '../types';
-import { motion } from 'framer-motion';
-import { ArrowRight, PlayCircle, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, PlayCircle, Zap, X } from 'lucide-react';
 
 interface HeroProps {
   onNavigate: (page: Page) => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-light dark:bg-dark z-0">
-        <div className="absolute inset-0 bg-grid opacity-30 dark:opacity-20 pointer-events-none"></div>
-        {/* Animated Blobs */}
-        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/30 dark:bg-primary/20 rounded-full blur-[100px] animate-blob" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-secondary/30 dark:bg-secondary/20 rounded-full blur-[100px] animate-blob animation-delay-2000" />
-        <div className="absolute top-[40%] left-[40%] w-[400px] h-[400px] bg-accent/20 dark:bg-accent/10 rounded-full blur-[100px] animate-blob animation-delay-4000" />
+      {/* Video Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2 opacity-60 dark:opacity-40"
+        >
+          {/* High-quality tech abstract video */}
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-network-connection-background-3136-large.mp4" type="video/mp4" />
+        </video>
+        
+        {/* Overlays for Readability */}
+        {/* Light mode: darker white overlay to keep text dark readable but video visible */}
+        <div className="absolute inset-0 bg-white/80 dark:bg-black/70 mix-blend-hard-light dark:mix-blend-multiply transition-colors duration-300"></div>
+        {/* Base fade for consistency */}
+        <div className="absolute inset-0 bg-light/50 dark:bg-dark/80 backdrop-blur-[2px]"></div>
+        {/* Grid pattern on top */}
+        <div className="absolute inset-0 bg-grid opacity-20 dark:opacity-20 pointer-events-none"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
@@ -52,7 +67,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed"
+            className="text-xl text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed font-medium"
           >
             We engineer digital experiences that redefine industries. From AI-driven analytics to industrial hardware, we build the future.
           </motion.p>
@@ -70,7 +85,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               Start Building <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
             <button 
-              onClick={() => onNavigate('contact')}
+              onClick={() => setIsVideoOpen(true)}
               className="px-8 py-4 bg-white/50 dark:bg-white/5 hover:bg-white/80 dark:hover:bg-white/10 text-dark dark:text-white border border-gray-200 dark:border-white/10 rounded-full font-bold backdrop-blur-sm transition-all flex items-center gap-3 text-lg"
             >
               <PlayCircle size={20} /> Watch Demo
@@ -126,6 +141,43 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Video Modal */}
+      <AnimatePresence>
+        {isVideoOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+            onClick={() => setIsVideoOpen(false)}
+          >
+            <button 
+              className="absolute top-6 right-6 text-white hover:text-primary transition-colors"
+              onClick={() => setIsVideoOpen(false)}
+            >
+              <X size={32} />
+            </button>
+            <motion.div 
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              className="w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1" 
+                title="Demo Video" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen
+              ></iframe>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

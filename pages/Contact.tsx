@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, ExternalLink } from 'lucide-react';
 
 export const Contact = () => {
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
@@ -66,6 +66,14 @@ export const Contact = () => {
                   <p className="text-gray-600 dark:text-gray-400">
                     123 Innovation Blvd, Tech District<br/>San Francisco, CA 94107
                   </p>
+                  <a 
+                    href="https://www.google.com/maps/search/?api=1&query=123+Innovation+Blvd,+San+Francisco,+CA+94107" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-secondary mt-2 transition-colors group"
+                  >
+                    View on Map <ExternalLink size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                  </a>
                 </div>
               </div>
             </div>

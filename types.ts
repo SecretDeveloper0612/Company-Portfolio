@@ -9,6 +9,7 @@ export interface Product {
   image: string;
   features: string[];
   category: 'software' | 'hardware';
+  images?: string[];
 }
 
 export interface TeamMember {
