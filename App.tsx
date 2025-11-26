@@ -8,6 +8,8 @@ import { Contact } from './pages/Contact';
 import { FAQ } from './pages/FAQ';
 import { Privacy } from './pages/Privacy';
 import { Terms } from './pages/Terms';
+import { ChatBot } from './components/ChatBot';
+import { ScrollToTop } from './components/ScrollToTop';
 import { Page } from './types';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -22,6 +24,14 @@ export default function App() {
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
+
+  // Smooth scroll to top on page change
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }, [currentPage]);
 
   const renderPage = () => {
     switch (currentPage) {
@@ -78,6 +88,8 @@ export default function App() {
       </main>
 
       <Footer onNavigate={setCurrentPage} />
+      <ChatBot />
+      <ScrollToTop />
     </div>
   );
 }

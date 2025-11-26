@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Product } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, ShoppingBag, ArrowUpRight, Monitor, Wrench, Grid } from 'lucide-react';
+import { X, Check, ShoppingBag, ArrowUpRight, Monitor, Wrench, Grid, Search } from 'lucide-react';
 
 const products: Product[] = [
   {
@@ -70,7 +70,7 @@ const products: Product[] = [
     price: "Bulk Pricing",
     shortDesc: "Premium industrial grade hardware for global export.",
     fullDesc: "We are a premier exporter of industrial hardware tools serving global markets. Our heavy-duty product line includes precision power tools, hydraulic equipment, and essential hand tools engineered for reliability in the toughest environments. Perfect for large-scale construction projects and industrial manufacturing lines.",
-    image: "https://picsum.photos/400/300?random=16",
+    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=800&auto=format&fit=crop",
     features: ["Global Export Logistics", "ISO Certified Durability", "Bulk Order Discounts", "Lifetime Service Support"],
     category: 'hardware'
   },
@@ -80,7 +80,7 @@ const products: Product[] = [
     price: "$249.00",
     shortDesc: "Brushless 20V motor with titanium chuck.",
     fullDesc: "The Titanium Impact Drill X1 is engineered for professional contractors. Featuring a high-efficiency brushless motor that delivers 50% more runtime, a heavy-duty titanium chuck for superior bit retention, and an ergonomic grip for all-day use. Includes 2 batteries and a fast charger.",
-    image: "https://picsum.photos/400/300?random=17",
+    image: "https://images.unsplash.com/photo-1622072049187-5735db9d39e3?q=80&w=800&auto=format&fit=crop",
     features: ["Brushless Motor", "2000 in-lbs Torque", "2x 5Ah Batteries", "5-Year Warranty"],
     category: 'hardware'
   },
@@ -90,7 +90,7 @@ const products: Product[] = [
     price: "Bulk Pricing",
     shortDesc: "3-Ton low profile rapid pump jack.",
     fullDesc: "Designed for automotive professionals and serious enthusiasts. This 3-ton heavy-duty steel floor jack features a dual piston rapid pump technology to reach max height in just 3.5 pumps. The low profile design fits under lowered vehicles easily.",
-    image: "https://picsum.photos/400/300?random=18",
+    image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80&w=800",
     features: ["3-Ton Capacity", "Dual Piston Pump", "Overload Protection", "Steel Construction"],
     category: 'hardware'
   },
@@ -100,7 +100,7 @@ const products: Product[] = [
     price: "$189.99",
     shortDesc: "200-piece chrome vanadium tool set.",
     fullDesc: "The ultimate collection for any workshop. This 200-piece set includes sockets, wrenches, hex keys, and drivers, all forged from high-quality chrome vanadium steel for maximum strength and corrosion resistance. Comes in a rugged, organized carry case.",
-    image: "https://picsum.photos/400/300?random=19",
+    image: "https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?q=80&w=800&auto=format&fit=crop",
     features: ["200 Pieces", "Cr-V Steel", "72-Tooth Ratchets", "Lifetime Warranty"],
     category: 'hardware'
   }
@@ -109,10 +109,17 @@ const products: Product[] = [
 export const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [activeCategory, setActiveCategory] = useState<'all' | 'software' | 'hardware'>('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredProducts = products.filter(product => 
-    activeCategory === 'all' ? true : product.category === activeCategory
-  );
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = activeCategory === 'all' ? true : product.category === activeCategory;
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = product.title.toLowerCase().includes(searchLower) || 
+                          product.shortDesc.toLowerCase().includes(searchLower) ||
+                          product.fullDesc.toLowerCase().includes(searchLower);
+    
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="pt-24 pb-24 bg-light dark:bg-dark min-h-screen relative overflow-hidden">
@@ -127,149 +134,196 @@ export const Products = () => {
           </p>
         </div>
 
-        {/* Category Filter */}
-        <div className="flex justify-center mb-16">
-          <div className="flex gap-2 p-1 bg-white dark:bg-white/5 rounded-full border border-gray-200 dark:border-white/10 backdrop-blur-sm">
-            {[
-              { id: 'all', label: 'All Products', icon: <Grid size={18} /> },
-              { id: 'software', label: 'Software', icon: <Monitor size={18} /> },
-              { id: 'hardware', label: 'Hardware', icon: <Wrench size={18} /> }
-            ].map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id as any)}
-                className={`px-6 py-3 rounded-full flex items-center gap-2 font-bold transition-all duration-300 ${
-                  activeCategory === category.id
-                    ? 'bg-primary text-white shadow-lg shadow-primary/30'
-                    : 'text-gray-500 hover:text-dark dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5'
-                }`}
-              >
-                {category.icon}
-                <span className="hidden sm:inline">{category.label}</span>
-              </button>
-            ))}
-          </div>
+        {/* Search Bar */}
+        <div className="max-w-xl mx-auto mb-10">
+            <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-primary rounded-full opacity-20 group-hover:opacity-30 blur transition-opacity"></div>
+                <div className="relative flex items-center bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-full shadow-lg backdrop-blur-md">
+                    <Search className="ml-4 text-gray-400" size={20} />
+                    <input 
+                        type="text" 
+                        placeholder="Search for products..." 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full py-3 px-4 bg-transparent border-none focus:outline-none text-dark dark:text-white placeholder-gray-400"
+                    />
+                </div>
+            </div>
         </div>
 
+        {/* Filters */}
+        <div className="flex justify-center gap-4 mb-16 flex-wrap">
+          <button 
+            onClick={() => setActiveCategory('all')}
+            className={`px-6 py-2 rounded-full font-medium transition-all flex items-center gap-2 ${
+              activeCategory === 'all' 
+                ? 'bg-dark dark:bg-white text-white dark:text-dark shadow-lg scale-105' 
+                : 'bg-white dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10'
+            }`}
+          >
+            <Grid size={18} /> All Products
+          </button>
+          <button 
+            onClick={() => setActiveCategory('software')}
+            className={`px-6 py-2 rounded-full font-medium transition-all flex items-center gap-2 ${
+              activeCategory === 'software' 
+                ? 'bg-primary text-white shadow-lg shadow-primary/30 scale-105' 
+                : 'bg-white dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10'
+            }`}
+          >
+            <Monitor size={18} /> Software Solutions
+          </button>
+          <button 
+            onClick={() => setActiveCategory('hardware')}
+            className={`px-6 py-2 rounded-full font-medium transition-all flex items-center gap-2 ${
+              activeCategory === 'hardware' 
+                ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30 scale-105' 
+                : 'bg-white dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10'
+            }`}
+          >
+            <Wrench size={18} /> Hardware Tools
+          </button>
+        </div>
+
+        {/* Product Grid */}
         <motion.div 
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            layout
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence>
             {filteredProducts.map((product) => (
               <motion.div
                 layout
+                key={product.id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
+                whileHover={{ y: -12, scale: 1.03 }}
                 transition={{ duration: 0.3 }}
-                key={product.id}
-                className="group relative rounded-3xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-primary/50 overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,102,255,0.15)] flex flex-col h-full"
+                className="group relative rounded-3xl overflow-hidden glass-card bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 hover:border-primary/50 transition-colors duration-300 z-0 hover:z-20 hover:shadow-2xl dark:hover:shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
               >
-                {/* Image Container */}
-                <div className="relative h-56 overflow-hidden shrink-0">
+                {/* Holographic Border Effect */}
+                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: 'linear-gradient(45deg, transparent, rgba(0,102,255,0.1), transparent)' }}></div>
+                
+                <div className="h-64 overflow-hidden relative">
                   <img 
                     src={product.image} 
                     alt={product.title} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark/90 to-transparent opacity-60"></div>
-                  
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                    {product.category}
-                  </div>
-
-                  <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-3 py-1 rounded-full">
-                      {product.price}
+                  <div className="absolute top-4 left-4">
+                     <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md text-white shadow-lg ${
+                         product.category === 'hardware' ? 'bg-orange-500/80' : 'bg-primary/80'
+                     }`}>
+                        {product.category}
+                     </span>
                   </div>
                 </div>
-
-                {/* Content */}
-                <div className="p-8 relative flex flex-col flex-grow">
+                
+                <div className="p-8 relative">
                   <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-2xl font-bold text-dark dark:text-white group-hover:text-primary transition-colors">{product.title}</h3>
+                    <div>
+                        <h3 className="text-2xl font-bold text-dark dark:text-white mb-1 group-hover:text-primary transition-colors">{product.title}</h3>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm h-10 line-clamp-2">{product.shortDesc}</p>
+                    </div>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-8 leading-relaxed line-clamp-2 flex-grow">{product.shortDesc}</p>
                   
-                  <button 
-                    onClick={() => setSelectedProduct(product)}
-                    className="w-full py-4 rounded-xl bg-gray-50 dark:bg-white/5 text-dark dark:text-white font-bold flex items-center justify-center gap-2 group-hover:bg-primary group-hover:text-white transition-all mt-auto"
-                  >
-                    View Details <ArrowUpRight size={18} />
-                  </button>
+                  <div className="flex justify-between items-center mt-6 pt-6 border-t border-gray-100 dark:border-white/10">
+                    <span className="text-xl font-bold text-dark dark:text-white">{product.price}</span>
+                    <button 
+                      onClick={() => setSelectedProduct(product)}
+                      className="px-5 py-2 rounded-full bg-dark dark:bg-white text-white dark:text-dark font-semibold text-sm hover:bg-primary dark:hover:bg-gray-200 transition-colors shadow-lg"
+                    >
+                      View Details
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {filteredProducts.length === 0 && (
+            <div className="text-center py-20">
+                <p className="text-xl text-gray-500">No products found matching your search.</p>
+            </div>
+        )}
       </div>
 
       {/* Product Modal */}
       <AnimatePresence>
         {selectedProduct && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center px-4">
-            <motion.div 
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedProduct(null)}
-              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+            <motion.div
+              layoutId={`product-${selectedProduct.id}`}
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 30 }}
-              className="relative bg-white dark:bg-[#111] rounded-[2rem] overflow-hidden max-w-5xl w-full max-h-[90vh] overflow-y-auto shadow-2xl grid md:grid-cols-2 border border-white/10"
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative bg-white dark:bg-gray-900 w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row z-10 border border-gray-200 dark:border-gray-700"
             >
               <button 
                 onClick={() => setSelectedProduct(null)}
-                className="absolute top-6 right-6 p-2 bg-black/10 dark:bg-white/10 rounded-full z-20 hover:bg-red-500 hover:text-white transition-colors"
+                className="absolute top-4 right-4 p-2 bg-black/10 dark:bg-white/10 rounded-full hover:bg-black/20 dark:hover:bg-white/20 transition-colors z-20"
               >
-                <X size={20} />
+                <X size={20} className="text-dark dark:text-white" />
               </button>
-              
-              <div className="h-72 md:h-auto relative group">
-                 <img src={selectedProduct.image} alt={selectedProduct.title} className="w-full h-full object-cover" />
-                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                 <div className="absolute bottom-8 left-8 text-white md:hidden">
-                    <h2 className="text-3xl font-bold">{selectedProduct.title}</h2>
-                 </div>
+
+              <div className="w-full md:w-1/2 h-64 md:h-auto relative">
+                <img 
+                  src={selectedProduct.image} 
+                  alt={selectedProduct.title} 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8 md:hidden">
+                    <h2 className="text-3xl font-bold text-white">{selectedProduct.title}</h2>
+                </div>
               </div>
 
-              <div className="p-8 md:p-12 flex flex-col">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className={`text-xs font-bold uppercase tracking-wider px-2 py-1 rounded text-white ${selectedProduct.category === 'hardware' ? 'bg-orange-500' : 'bg-blue-500'}`}>
-                    {selectedProduct.category}
-                  </span>
-                </div>
-                <h2 className="text-4xl font-heading font-bold text-dark dark:text-white mb-2 hidden md:block">{selectedProduct.title}</h2>
-                <div className="inline-block self-start px-4 py-1 rounded-full bg-primary/10 text-primary font-bold text-lg mb-6">
-                    {selectedProduct.price}
-                </div>
-                
-                <p className="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed text-lg">
-                  {selectedProduct.fullDesc}
-                </p>
-
-                <div className="mb-10 p-6 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/5">
-                  <h4 className="font-bold text-dark dark:text-white mb-4 uppercase text-xs tracking-widest text-opacity-70">Key Capabilities</h4>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {selectedProduct.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-3 text-gray-700 dark:text-gray-300 font-medium">
-                        <span className="w-6 h-6 rounded-full bg-green-500 text-white flex items-center justify-center text-xs shadow-lg shadow-green-500/30">
-                          <Check size={14} strokeWidth={3} />
-                        </span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+              <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col h-full overflow-y-auto max-h-[60vh] md:max-h-full">
+                <div className="hidden md:block mb-6">
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white ${
+                        selectedProduct.category === 'hardware' ? 'bg-orange-500' : 'bg-primary'
+                    }`}>
+                        {selectedProduct.category}
+                    </span>
+                    <h2 className="text-3xl font-heading font-bold mt-2 text-dark dark:text-white">{selectedProduct.title}</h2>
+                    <p className="text-2xl font-light text-primary mt-1">{selectedProduct.price}</p>
                 </div>
 
-                <div className="mt-auto flex gap-4">
-                  <button className="flex-1 py-4 bg-primary text-white rounded-xl font-bold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary/30 text-lg">
-                    <ShoppingBag size={20} /> 
-                    {selectedProduct.price.includes('Custom') || selectedProduct.price.includes('Bulk') ? 'Request Quote' : 'Purchase Now'}
+                <div className="space-y-6 flex-grow">
+                  <div>
+                    <h3 className="font-bold text-dark dark:text-white mb-2">Description</h3>
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                      {selectedProduct.fullDesc}
+                    </p>
+                  </div>
+
+                  <div>
+                    <h3 className="font-bold text-dark dark:text-white mb-3">Key Features</h3>
+                    <ul className="space-y-2">
+                      {selectedProduct.features.map((feature, index) => (
+                        <li key={index} className="flex items-start gap-3 text-gray-600 dark:text-gray-300">
+                          <Check size={18} className="text-green-500 mt-0.5 shrink-0" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-8 border-t border-gray-100 dark:border-gray-800 flex gap-4">
+                  <button className="flex-1 py-4 bg-primary hover:bg-blue-600 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary/20">
+                    {selectedProduct.category === 'hardware' || selectedProduct.price === 'Bulk Pricing' ? 'Request Quote' : 'Purchase Now'} <ArrowUpRight size={20} />
+                  </button>
+                  <button className="px-4 py-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <ShoppingBag size={20} className="text-dark dark:text-white" />
                   </button>
                 </div>
               </div>
