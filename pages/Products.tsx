@@ -1,117 +1,119 @@
 import React, { useState } from 'react';
 import { Product } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, ShoppingBag, ArrowUpRight, Monitor, Wrench, Grid, Search } from 'lucide-react';
+import { X, Check, ShoppingBag, ArrowUpRight, Wrench, Grid, Search } from 'lucide-react';
 
 const products: Product[] = [
   {
     id: 1,
-    title: "Nova Analytics",
-    price: "$49/mo",
-    shortDesc: "Real-time data tracking for enterprise.",
-    fullDesc: "Nova Analytics is a comprehensive data intelligence platform designed for large-scale enterprises. Monitor user behavior, track sales funnels, and generate predictive reports using our AI-driven engine. Integrates seamlessly with your existing stack.",
-    image: "https://picsum.photos/400/300?random=10",
-    features: ["Real-time Dashboards", "AI Predictions", "Custom Reports", "Team Collaboration"],
-    category: 'software'
-  },
-  {
-    id: 2,
-    title: "CloudSecure",
-    price: "$99/mo",
-    shortDesc: "Advanced cloud security shielding.",
-    fullDesc: "Protect your digital assets with CloudSecure. Our automated threat detection system blocks malicious traffic before it reaches your servers. Includes DDoS protection, firewall management, and 24/7 security monitoring.",
-    image: "https://picsum.photos/400/300?random=11",
-    features: ["DDoS Protection", "WAF", "Bot Mitigation", "SSL Management"],
-    category: 'software'
-  },
-  {
-    id: 3,
-    title: "DevStream",
-    price: "$29/mo",
-    shortDesc: "CI/CD pipeline automation tool.",
-    fullDesc: "Accelerate your deployment cycles with DevStream. Automated testing, building, and deployment pipelines that scale with your team. Supports Docker, Kubernetes, and all major cloud providers out of the box.",
-    image: "https://picsum.photos/400/300?random=12",
-    features: ["Automated Deployments", "Container Registry", "Environment Management", "Rollback Support"],
-    category: 'software'
-  },
-  {
-    id: 4,
-    title: "TeamSync",
-    price: "$15/user",
-    shortDesc: "Collaboration platform for remote teams.",
-    fullDesc: "Bridge the gap between remote team members. TeamSync offers HD video conferencing, real-time document editing, and project management tools in one unified interface.",
-    image: "https://picsum.photos/400/300?random=13",
-    features: ["HD Video Calls", "Shared Whiteboard", "Task Management", "File Sharing"],
-    category: 'software'
-  },
-  {
-    id: 5,
-    title: "MarketingFlow",
-    price: "$79/mo",
-    shortDesc: "Marketing automation and CRM.",
-    fullDesc: "Streamline your marketing campaigns with flow-based automation. Segment audiences, send personalized emails, and track conversions all from a single dashboard.",
-    image: "https://picsum.photos/400/300?random=14",
-    features: ["Email Automation", "Lead Scoring", "Landing Page Builder", "A/B Testing"],
-    category: 'software'
-  },
-  {
-    id: 6,
-    title: "FinanceAI",
-    price: "$199/mo",
-    shortDesc: "Automated financial forecasting.",
-    fullDesc: "Take control of your finances with AI. FinanceAI connects to your bank accounts and accounting software to provide real-time cash flow analysis and future runway predictions.",
-    image: "https://picsum.photos/400/300?random=15",
-    features: ["Cash Flow Analysis", "Expense Categorization", "Tax Estimations", "Multi-currency Support"],
-    category: 'software'
-  },
-  {
-    id: 7,
     title: "Industrial Hardware Series",
     price: "Bulk Pricing",
     shortDesc: "Premium industrial grade hardware for global export.",
     fullDesc: "We are a premier exporter of industrial hardware tools serving global markets. Our heavy-duty product line includes precision power tools, hydraulic equipment, and essential hand tools engineered for reliability in the toughest environments. Perfect for large-scale construction projects and industrial manufacturing lines.",
-    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop",
     features: ["Global Export Logistics", "ISO Certified Durability", "Bulk Order Discounts", "Lifetime Service Support"],
     category: 'hardware'
   },
   {
-    id: 8,
+    id: 2,
     title: "Titanium Impact Drill X1",
     price: "$249.00",
     shortDesc: "Brushless 20V motor with titanium chuck.",
     fullDesc: "The Titanium Impact Drill X1 is engineered for professional contractors. Featuring a high-efficiency brushless motor that delivers 50% more runtime, a heavy-duty titanium chuck for superior bit retention, and an ergonomic grip for all-day use. Includes 2 batteries and a fast charger.",
-    image: "https://images.unsplash.com/photo-1622072049187-5735db9d39e3?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1622037022824-0c71d511ef3c?q=80&w=800&auto=format&fit=crop",
     features: ["Brushless Motor", "2000 in-lbs Torque", "2x 5Ah Batteries", "5-Year Warranty"],
     category: 'hardware'
   },
   {
-    id: 9,
+    id: 3,
     title: "Hydraulic Floor Jack Pro",
     price: "Bulk Pricing",
     shortDesc: "3-Ton low profile rapid pump jack.",
     fullDesc: "Designed for automotive professionals and serious enthusiasts. This 3-ton heavy-duty steel floor jack features a dual piston rapid pump technology to reach max height in just 3.5 pumps. The low profile design fits under lowered vehicles easily.",
-    image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1486262715619-01b8c245a352?q=80&w=800&auto=format&fit=crop",
     features: ["3-Ton Capacity", "Dual Piston Pump", "Overload Protection", "Steel Construction"],
     category: 'hardware'
   },
   {
-    id: 10,
+    id: 4,
     title: "Mechanic's Master Set",
     price: "$189.99",
     shortDesc: "200-piece chrome vanadium tool set.",
     fullDesc: "The ultimate collection for any workshop. This 200-piece set includes sockets, wrenches, hex keys, and drivers, all forged from high-quality chrome vanadium steel for maximum strength and corrosion resistance. Comes in a rugged, organized carry case.",
-    image: "https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?q=80&w=800&auto=format&fit=crop",
     features: ["200 Pieces", "Cr-V Steel", "72-Tooth Ratchets", "Lifetime Warranty"],
+    category: 'hardware'
+  },
+  {
+    id: 5,
+    title: "Pro-Series Angle Grinder",
+    price: "$129.99",
+    shortDesc: "High-torque 11 Amp motor for heavy duty grinding.",
+    fullDesc: "Built for industrial environments, this angle grinder features a dust-ejection system to protect the motor, a paddle switch for safety, and tool-free guard adjustment. Perfect for metal working and masonry cutting.",
+    image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=800&auto=format&fit=crop",
+    features: ["11 Amp Motor", "11,000 RPM", "Dust Ejection System", "Vibration Control Handle"],
+    category: 'hardware'
+  },
+  {
+    id: 6,
+    title: "Laser Distance Measure",
+    price: "$89.50",
+    shortDesc: "High-precision digital measuring up to 165ft.",
+    fullDesc: "Ditch the tape measure. Our Laser Distance Measure provides accuracy within 1/16 inch at distances up to 165 feet. Features a backlit color display, Bluetooth connectivity for data export, and rugged IP54 dust/water resistance.",
+    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=800&auto=format&fit=crop",
+    features: ["165ft Range", "Bluetooth Connectivity", "IP54 Rated", "Backlit Display"],
+    category: 'hardware'
+  },
+  {
+    id: 7,
+    title: "Pneumatic Impact Wrench",
+    price: "$159.00",
+    shortDesc: "1/2-inch air impact gun for automotive repair.",
+    fullDesc: "Delivering a massive 1200 ft-lbs of nut-busting torque, this pneumatic impact wrench is a beast in the auto shop. Lightweight composite body reduces fatigue while the twin-hammer mechanism ensures consistent power delivery.",
+    image: "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?q=80&w=800&auto=format&fit=crop",
+    features: ["1200 ft-lbs Torque", "Twin Hammer Mechanism", "Composite Body", "Adjustable Power"],
+    category: 'hardware'
+  },
+  {
+    id: 8,
+    title: "Cordless Circular Saw",
+    price: "$199.99",
+    shortDesc: "7-1/4 inch saw with 60 degree bevel capacity.",
+    fullDesc: "Cut the cord without sacrificing power. This 20V Max circular saw rips through 2x material with ease. Features an electric brake, LED cut line guide, and magnesium shoe for durability. Ideal for framing and general construction.",
+    image: "https://images.unsplash.com/photo-1544724569-5f546fd6dd2a?q=80&w=800&auto=format&fit=crop",
+    features: ["5800 RPM", "Electric Brake", "LED Guide", "Magnesium Shoe"],
+    category: 'hardware'
+  },
+  {
+    id: 9,
+    title: "Heavy-Duty Bench Vise",
+    price: "$145.00",
+    shortDesc: "6-inch swivel base vise with anvil.",
+    fullDesc: "The foundation of any workbench. This 6-inch bench vise is cast from 30,000 PSI gray iron. It features a 360-degree swivel base, large anvil work surface, and replaceable hardened steel jaws. A must-have for fabrication and assembly.",
+    image: "https://images.unsplash.com/photo-1616353329119-c4ddf4b2ce6b?q=80&w=800&auto=format&fit=crop", 
+    features: ["30,000 PSI Iron", "360° Swivel Base", "Hardened Jaws", "Large Anvil"],
+    category: 'hardware'
+  },
+  {
+    id: 10,
+    title: "Digital Multimeter Pro",
+    price: "$75.00",
+    shortDesc: "True RMS multimeter for electricians.",
+    fullDesc: "Troubleshoot electrical issues safely and accurately. This True RMS digital multimeter measures voltage, current, resistance, capacitance, and temperature. Safety rated CAT III 1000V / CAT IV 600V with a rugged rubber holster.",
+    image: "https://images.unsplash.com/photo-1581093458791-9f302e6d862e?q=80&w=800&auto=format&fit=crop",
+    features: ["True RMS", "Auto-Ranging", "Temp Probe Included", "CAT IV 600V Safety"],
     category: 'hardware'
   }
 ];
 
 export const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [activeCategory, setActiveCategory] = useState<'all' | 'software' | 'hardware'>('all');
+  const [activeCategory, setActiveCategory] = useState<'all' | 'hardware'>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredProducts = products.filter(product => {
+    // Since we only have hardware now, 'all' and 'hardware' effectively show the same, 
+    // but we keep the logic flexible for future categories.
     const matchesCategory = activeCategory === 'all' ? true : product.category === activeCategory;
     const searchLower = searchQuery.toLowerCase();
     const matchesSearch = product.title.toLowerCase().includes(searchLower) || 
@@ -130,7 +132,7 @@ export const Products = () => {
         <div className="text-center mb-12 max-w-3xl mx-auto">
           <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6 text-dark dark:text-white">Our Products</h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">
-            Discover our suite of digital solutions and professional hardware tools designed to elevate performance.
+            Discover our premium range of professional hardware tools and industrial equipment designed for performance and durability.
           </p>
         </div>
 
@@ -142,7 +144,7 @@ export const Products = () => {
                     <Search className="ml-4 text-gray-400" size={20} />
                     <input 
                         type="text" 
-                        placeholder="Search for products..." 
+                        placeholder="Search tools and equipment..." 
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full py-3 px-4 bg-transparent border-none focus:outline-none text-dark dark:text-white placeholder-gray-400"
@@ -151,7 +153,7 @@ export const Products = () => {
             </div>
         </div>
 
-        {/* Filters */}
+        {/* Filters - Simplified for Hardware Only Focus */}
         <div className="flex justify-center gap-4 mb-16 flex-wrap">
           <button 
             onClick={() => setActiveCategory('all')}
@@ -161,17 +163,7 @@ export const Products = () => {
                 : 'bg-white dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10'
             }`}
           >
-            <Grid size={18} /> All Products
-          </button>
-          <button 
-            onClick={() => setActiveCategory('software')}
-            className={`px-6 py-2 rounded-full font-medium transition-all flex items-center gap-2 ${
-              activeCategory === 'software' 
-                ? 'bg-primary text-white shadow-lg shadow-primary/30 scale-105' 
-                : 'bg-white dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10'
-            }`}
-          >
-            <Monitor size={18} /> Software Solutions
+            <Grid size={18} /> All Tools
           </button>
           <button 
             onClick={() => setActiveCategory('hardware')}
@@ -181,7 +173,7 @@ export const Products = () => {
                 : 'bg-white dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10'
             }`}
           >
-            <Wrench size={18} /> Hardware Tools
+            <Wrench size={18} /> Hardware Only
           </button>
         </div>
 
@@ -212,9 +204,7 @@ export const Products = () => {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute top-4 left-4">
-                     <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md text-white shadow-lg ${
-                         product.category === 'hardware' ? 'bg-orange-500/80' : 'bg-primary/80'
-                     }`}>
+                     <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md text-white shadow-lg bg-orange-500/80">
                         {product.category}
                      </span>
                   </div>
@@ -288,9 +278,7 @@ export const Products = () => {
 
               <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col h-full overflow-y-auto max-h-[60vh] md:max-h-full">
                 <div className="hidden md:block mb-6">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white ${
-                        selectedProduct.category === 'hardware' ? 'bg-orange-500' : 'bg-primary'
-                    }`}>
+                    <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white bg-orange-500">
                         {selectedProduct.category}
                     </span>
                     <h2 className="text-3xl font-heading font-bold mt-2 text-dark dark:text-white">{selectedProduct.title}</h2>
@@ -320,7 +308,7 @@ export const Products = () => {
 
                 <div className="mt-8 pt-8 border-t border-gray-100 dark:border-gray-800 flex gap-4">
                   <button className="flex-1 py-4 bg-primary hover:bg-blue-600 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary/20">
-                    {selectedProduct.category === 'hardware' || selectedProduct.price === 'Bulk Pricing' ? 'Request Quote' : 'Purchase Now'} <ArrowUpRight size={20} />
+                    Request Quote <ArrowUpRight size={20} />
                   </button>
                   <button className="px-4 py-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                     <ShoppingBag size={20} className="text-dark dark:text-white" />
